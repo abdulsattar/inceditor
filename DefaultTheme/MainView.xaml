@@ -1,0 +1,56 @@
+﻿<Window x:Class="DefaultTheme.MainView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:vm="clr-namespace:IncEditor.ViewModels;assembly=IncEditor" xmlns:DefaultTheme="clr-namespace:DefaultTheme" Title="IncEditor | Default" Height="350" Width="525">
+	
+	<Window.Resources>
+		<DataTemplate DataType="{x:Type vm:DocumentViewModel}">
+			<DefaultTheme:DocumentView />
+		</DataTemplate>
+	</Window.Resources>
+
+	<Window.InputBindings>
+		<KeyBinding Key="X" Modifiers="Control" Command="{Binding ExitCommand}" />
+		<KeyBinding Key="N" Modifiers="Control" Command="{Binding NewWorkspaceCommand}" />
+		<KeyBinding Key="F4" Modifiers="Control" Command="{Binding CloseWorkspaceCommand}" />
+	</Window.InputBindings>
+	<DockPanel>
+		<Menu DockPanel.Dock="Top">
+			<MenuItem Header="_File">
+				<MenuItem Header="_New Tab" Command="{Binding NewWorkspaceCommand}" />
+				<Separator />
+				<MenuItem Header="Close Current Tab" Command="{Binding CloseWorkspaceCommand}" />
+				<Separator />
+				<MenuItem Header="E_xit" Command="{Binding ExitCommand}" />
+			</MenuItem>
+			<MenuItem Header="_Theme" ItemsSource="{Binding Themes}">
+				<MenuItem.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</MenuItem.ItemTemplate>
+			</MenuItem>
+		</Menu>
+		<StatusBar DockPanel.Dock="Bottom">
+			<TextBlock Text="{Binding StatusText}" />
+			<Separator />
+			<TextBlock Text="Theme: " />
+			<ComboBox ItemsSource="{Binding Themes}" SelectedItem="{Binding SelectedTheme}">
+				<ComboBox.ItemTemplate>
+					<DataTemplate>
+						<TextBlock Text="{Binding Name}" />
+					</DataTemplate>
+				</ComboBox.ItemTemplate>
+			</ComboBox>
+		</StatusBar>
+		<TabControl ItemsSource="{Binding Workspaces}" SelectedIndex="{Binding SelectedIndex}">
+			<TabControl.ItemTemplate>
+				<DataTemplate>
+					<DockPanel>
+						<Button Content="X" FontFamily="Courier" Width="18" Height="16" DockPanel.Dock="Right" Margin="4,0,0,0" Command="{Binding CloseCommand}" />
+						<TextBlock Text="{Binding HeaderText}" />
+					</DockPanel>
+				</DataTemplate>
+			</TabControl.ItemTemplate>
+		</TabControl>
+	</DockPanel>
+</Window>
